@@ -1,4 +1,4 @@
-import './App.css';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
 import NewTodoForm from './components/NewTodoForm.tsx';
@@ -8,6 +8,17 @@ type Todo = {
   text: string;
   completed: boolean;
 };
+
+const StyledContainer = styled.div`
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  margin: 0 auto;
+  max-width: 400px;
+`;
+
+const StyledList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
 
 const App = () => {
   const [todos, setTodos] = useState(new Map<string, Todo>());
@@ -41,10 +52,10 @@ const App = () => {
   };
 
   return (
-    <div>
+    <StyledContainer>
       <h1>ToDo List</h1>
       <NewTodoForm todos={todos} setTodos={setTodos} />
-      <ul>
+      <StyledList>
         {Array.from(todos.keys()).map((key) => {
           return (
             <Item
@@ -57,8 +68,8 @@ const App = () => {
             />
           );
         })}
-      </ul>
-    </div>
+      </StyledList>
+    </StyledContainer>
   );
 };
 

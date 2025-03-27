@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
 
 type Todo = {
@@ -12,6 +13,27 @@ type ItemProps = {
   onDelete: (itemKey: string) => void;
   onEdit: (itemKey: string, editedTodo: Todo) => void;
 };
+
+const StyledListItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px 4px;
+
+  &:hover {
+    background-color: lightgray;
+  }
+`;
+
+const StyledCheckboxLabel = styled.label<{ $completed: boolean }>`
+  flex-grow: 1;
+  text-decoration: ${(props) => (props.$completed ? 'line-through' : 'none')};
+  color: ${(props) => (props.$completed ? 'grey' : 'black')};
+
+  input {
+    margin-right: 8px;
+  }
+`;
 
 const Item: FC<ItemProps> = ({ itemKey, todo, onChange, onDelete, onEdit }) => {
   const [editing, setEditing] = useState<boolean>(false);
@@ -29,7 +51,7 @@ const Item: FC<ItemProps> = ({ itemKey, todo, onChange, onDelete, onEdit }) => {
   };
 
   return (
-    <li key={itemKey}>
+    <StyledListItem key={itemKey}>
       {editing ? (
         <>
           <form onSubmit={handleSave}>
@@ -47,19 +69,21 @@ const Item: FC<ItemProps> = ({ itemKey, todo, onChange, onDelete, onEdit }) => {
         </>
       ) : (
         <>
-          <label>
+          <StyledCheckboxLabel $completed={todo.completed}>
             <input
               type="checkbox"
               checked={todo.completed}
               onChange={() => onChange(itemKey, todo)}
             />
             {todo.text}
-          </label>
-          <button onClick={() => setEditing(true)}>&#9998;</button>
-          <button onClick={() => onDelete(itemKey)}>&#215;</button>
+          </StyledCheckboxLabel>
+          <div>
+            <button onClick={() => setEditing(true)}>&#9998;</button>
+            <button onClick={() => onDelete(itemKey)}>&#215;</button>
+          </div>
         </>
       )}
-    </li>
+    </StyledListItem>
   );
 };
 
